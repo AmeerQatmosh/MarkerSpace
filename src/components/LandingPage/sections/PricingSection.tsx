@@ -1,4 +1,3 @@
-// components/LandingPage/sections/PricingSection.tsx
 import { Button } from "@/components/ui/button";
 import React from "react";
 
@@ -35,7 +34,7 @@ const PricingSection: React.FC = () => {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-muted/40">
+    <section id="pricing" className="py-24 bg-muted/20">
       <div className="max-w-7xl mx-auto px-6 text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Simple, transparent pricing

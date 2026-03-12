@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -8,6 +8,7 @@ interface SearchBarProps {
   className?: string;
   id?: string;
   live?: boolean; // if true, search on typing
+  showQuery?: boolean; // show current query text
 }
 
 const HomePageSearchBar: FC<SearchBarProps> = ({
@@ -16,43 +17,42 @@ const HomePageSearchBar: FC<SearchBarProps> = ({
   className = "",
   id,
   live = true,
+  showQuery = true,
 }) => {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    if (live) {
-      const timer = setTimeout(() => {
-        onSearch(query);
-      }, 250); // small debounce
-      return () => clearTimeout(timer);
-    }
+    if (!live) return;
+    const timer = setTimeout(() => {
+      onSearch(query);
+    }, 250);
+    return () => clearTimeout(timer);
   }, [query, live, onSearch]);
 
+  const handleSearchClick = () => {
+    if (!live) onSearch(query);
+  };
+
   return (
-    <form
-      id={id}
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!live) onSearch(query);
-      }}
-      className={`flex items-center border overflow-hidden ${className}`}
-    >
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder={placeholder}
-        className="flex-grow px-4 py-2 focus:outline-none"
-        aria-label="Search input"
-      />
-      <button
-        type="submit"
-        className="text-gray-900 px-3 py-2 rounded transition hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-50"
-        aria-label="Submit search"
-      >
-        <FontAwesomeIcon icon={faSearch} />
-      </button>
-    </form>
+    <div id={id} className={`flex flex-col gap-2 ${className}`}>
+      <div className="relative w-full">
+        <Input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder={placeholder}
+          className="pr-10 pl-4 py-2 rounded-lg bg-card"
+          aria-label="Search input"
+        />
+
+        <Search
+          size={18}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+          aria-hidden="true"
+        />
+      </div>
+
+    </div>
   );
 };
 

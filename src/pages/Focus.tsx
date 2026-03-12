@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
-import HeroSection from "@/components/LandingPage/sections/HeroSection";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-
+import {
+  Grid,
+  List,
+  MoreVertical,
+  Pencil,
+  Trash,
+  CirclePlus,
+} from "lucide-react";
+import { usePersistentState } from "@/hooks/usePersistentState";
 interface Bookmark {
   _id: string;
   title: string;
@@ -20,6 +27,8 @@ interface FocusItem {
   updatedAt?: string;
 }
 
+type ViewMode = "grid" | "list";
+
 const Focus = () => {
   const { token: authToken } = useAuth();
   const token = authToken || localStorage.getItem("token");
@@ -28,7 +37,11 @@ const Focus = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [viewMode, setViewMode] = useState<"card" | "list">("card"); // new: card/list toggle
+  // const [viewMode, setViewMode] = useState<"card" | "list">("card");
+  const [viewMode, setViewMode] = usePersistentState<ViewMode>(
+    "focus-viewMode",
+    "grid",
+  );
 
   const [selectedBookmark, setSelectedBookmark] = useState<string>("");
   const [priority, setPriority] = useState<FocusItem["priority"]>("medium");
@@ -81,23 +94,38 @@ const Focus = () => {
       let res;
       if (editingItem) {
         // Update
-        res = await fetch(`http://localhost:5000/api/focus/${editingItem._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ priority, frequency, scheduledAt }),
-        });
+        res = await fetch(
+          `http://localhost:5000/api/focus/${editingItem._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ priority, frequency, scheduledAt }),
+          },
+        );
       } else {
         // Create
         res = await fetch("http://localhost:5000/api/focus", {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ bookmark: selectedBookmark, priority, frequency, scheduledAt }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            bookmark: selectedBookmark,
+            priority,
+            frequency,
+            scheduledAt,
+          }),
         });
       }
 
       const data = await res.json();
       if (!res.ok) {
-        if ((data as any).code === 11000) alert("Focus already exists for this bookmark");
+        if ((data as any).code === 11000)
+          alert("Focus already exists for this bookmark");
         else throw new Error(data.message || "Failed to save focus item");
         return;
       }
@@ -146,18 +174,6 @@ const Focus = () => {
 
   return (
     <div className="min-h-screen p-7">
-      <HeroSection
-        title="My Focus"
-        subtitle="Manage your focus priorities for bookmarks"
-        buttonText="View Insights"
-        buttonLink="/insights"
-        gradientFrom="from-blue-900"
-        gradientTo="to-blue-400"
-        textColor="text-white"
-        buttonBg="bg-white"
-        buttonTextColor="text-blue-500"
-      />
-
       {/* Add/Edit Button & View Toggle */}
       <section className="text-center py-6 flex flex-col md:flex-row justify-center gap-4">
         <Button
@@ -176,6 +192,21 @@ const Focus = () => {
 
         <div className="flex gap-2">
           <Button
+            variant={viewMode === "grid" ? "default" : "outline"}
+            onClick={() => setViewMode("grid")}
+          >
+            <Grid className="w-5 h-5 mr-1" /> Grid
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "default" : "outline"}
+            onClick={() => setViewMode("list")}
+          >
+            <List className="w-5 h-5 mr-1" /> List
+          </Button>
+        </div>
+
+        {/* <div className="flex gap-2">
+          <Button
             size="sm"
             variant={viewMode === "card" ? "default" : "outline"}
             onClick={() => setViewMode("card")}
@@ -189,7 +220,7 @@ const Focus = () => {
           >
             List View
           </Button>
-        </div>
+        </div> */}
       </section>
 
       {/* Focus Form */}
@@ -202,7 +233,9 @@ const Focus = () => {
             }}
             className="bg-card p-6 rounded-xl shadow-lg w-full max-w-md space-y-4"
           >
-            <h3 className="text-xl font-semibold">{editingItem ? "Edit Focus" : "Add Focus"}</h3>
+            <h3 className="text-xl font-semibold">
+              {editingItem ? "Edit Focus" : "Add Focus"}
+            </h3>
 
             <select
               className="w-full border border-border rounded px-2 py-1"
@@ -222,7 +255,9 @@ const Focus = () => {
             <select
               className="w-full border border-border rounded px-2 py-1"
               value={priority}
-              onChange={(e) => setPriority(e.target.value as FocusItem["priority"])}
+              onChange={(e) =>
+                setPriority(e.target.value as FocusItem["priority"])
+              }
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -233,7 +268,9 @@ const Focus = () => {
             <select
               className="w-full border border-border rounded px-2 py-1"
               value={frequency}
-              onChange={(e) => setFrequency(e.target.value as FocusItem["frequency"])}
+              onChange={(e) =>
+                setFrequency(e.target.value as FocusItem["frequency"])
+              }
             >
               <option value="once">Once</option>
               <option value="daily">Daily</option>
@@ -271,10 +308,13 @@ const Focus = () => {
           <p className="text-center">Loading focus items...</p>
         ) : focusList.length === 0 ? (
           <p className="text-center text-gray-500">No focus items yet.</p>
-        ) : viewMode === "card" ? (
+        ) : viewMode === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {focusList.map((item) => (
-              <Card key={item._id} className="p-4 rounded-xl shadow-md border border-border">
+              <Card
+                key={item._id}
+                className="p-4 rounded-xl shadow-md border border-border"
+              >
                 <CardHeader>
                   <CardTitle>{item.bookmark?.title}</CardTitle>
                 </CardHeader>
@@ -291,7 +331,11 @@ const Focus = () => {
                     <Button size="sm" onClick={() => handleEditFocus(item)}>
                       Edit
                     </Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleDeleteFocus(item._id)}>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDeleteFocus(item._id)}
+                    >
                       Delete
                     </Button>
                   </div>
@@ -321,7 +365,11 @@ const Focus = () => {
                   <Button size="sm" onClick={() => handleEditFocus(item)}>
                     Edit
                   </Button>
-                  <Button size="sm" variant="destructive" onClick={() => handleDeleteFocus(item._id)}>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDeleteFocus(item._id)}
+                  >
                     Delete
                   </Button>
                 </div>

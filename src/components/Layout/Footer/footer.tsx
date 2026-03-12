@@ -3,7 +3,7 @@ import logo from "@/assets/markspace_logo.png";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-card py-8">
+    <footer className="bg-card border border-border py-8">
       <div className="container mx-auto px-4 flex flex-col md:flex-row md:justify-between md:items-start space-y-6 md:space-y-0">
         {/* Logo & Copyright */}
         <div className="w-full md:w-auto flex flex-col">

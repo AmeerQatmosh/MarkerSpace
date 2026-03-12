@@ -4,10 +4,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import HomePageSearchBar from "@/components/Searchbar/homepageSearchBar";
 import AddBookmarkForm from "../components/Bookmarks/AddBookmarkForm";
-import { Grid, List, Settings, CirclePlus } from "lucide-react";
-
-import ResourceCard from "@/components/common/ResourceCard";
-import ResourceCardActions from "@/components/common/ResourceCardActions";
+import {
+  Grid,
+  List,
+  MoreVertical,
+  Pencil,
+  Trash,
+  CirclePlus,
+} from "lucide-react";
+import { usePersistentState } from "@/hooks/usePersistentState";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+// import ResourceCard from "@/components/common/ResourceCard";
+// import ResourceCardActions from "@/components/common/ResourceCardActions";
 interface Bookmark {
   _id: string;
   title: string;
@@ -45,7 +58,10 @@ const Collections = () => {
 
   const [searchQuery, setSearchQuery] = useState(""); // bookmarks search
   const [collectionSearchQuery, setCollectionSearchQuery] = useState(""); // collections search
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const key = collection
+    ? `collections-${collection.name}-viewMode`
+    : "collections-viewMode";
+  const [viewMode, setViewMode] = usePersistentState<ViewMode>(key, "grid");
 
   const [showGearMenu, setShowGearMenu] = useState(false);
 
@@ -100,16 +116,16 @@ const Collections = () => {
         (b) =>
           b.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           b.tags.some((t) =>
-            t.toLowerCase().includes(searchQuery.toLowerCase())
-          )
-      )
+            t.toLowerCase().includes(searchQuery.toLowerCase()),
+          ),
+      ),
     );
   }, [searchQuery, bookmarks]);
 
   /* -------------------- Collections Search -------------------- */
   const filteredCollections = collectionSearchQuery
     ? collections.filter((c) =>
-        c.name.toLowerCase().includes(collectionSearchQuery.toLowerCase())
+        c.name.toLowerCase().includes(collectionSearchQuery.toLowerCase()),
       )
     : collections;
 
@@ -122,10 +138,10 @@ const Collections = () => {
 
   const handleBookmarkUpdated = (bookmark: Bookmark) => {
     setBookmarks((prev) =>
-      prev.map((b) => (b._id === bookmark._id ? bookmark : b))
+      prev.map((b) => (b._id === bookmark._id ? bookmark : b)),
     );
     setFilteredBookmarks((prev) =>
-      prev.map((b) => (b._id === bookmark._id ? bookmark : b))
+      prev.map((b) => (b._id === bookmark._id ? bookmark : b)),
     );
     setEditBookmark(null);
     setShowBookmarkForm(false);
@@ -151,7 +167,7 @@ const Collections = () => {
   const handleDeleteCollection = async () => {
     if (!collection || !token) return;
     const name = prompt(
-      `Type the name of the collection (${collection.name}) to confirm deletion:`
+      `Type the name of the collection (${collection.name}) to confirm deletion:`,
     );
     if (name !== collection.name) return;
 
@@ -165,9 +181,8 @@ const Collections = () => {
 
   const getFavicon = (url: string) => {
     try {
-      const hostname = new URL(
-        url.startsWith("http") ? url : `https://${url}`
-      ).hostname;
+      const hostname = new URL(url.startsWith("http") ? url : `https://${url}`)
+        .hostname;
       return `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
     } catch {
       return "/favicon.ico";
@@ -195,7 +210,7 @@ const Collections = () => {
                 placeholder="Search collections..."
                 live
                 onSearch={(q) => setCollectionSearchQuery(q)}
-                className="max-w-md h-11 bg-card border border-border rounded-xl shadow-md p-2"
+                className="max-w-md p-2"
               />
               <Button onClick={() => setShowCollectionForm(true)}>
                 <CirclePlus className="w-5 h-5 mr-1" /> New Collection
@@ -209,41 +224,40 @@ const Collections = () => {
                 placeholder="Search bookmarks..."
                 live
                 onSearch={(q) => setSearchQuery(q)}
-                className="max-w-md h-11 bg-card border border-border rounded-xl shadow-md p-2"
+                className="max-w-md p-2"
               />
               <Button onClick={() => setShowBookmarkForm(true)}>
                 <CirclePlus className="w-5 h-5 mr-1" /> Add Bookmard
               </Button>
 
-              <div className="relative">
-                <Button
-                  onClick={() => setShowGearMenu((v) => !v)}
-                  className="p-2"
-                >
-                  <Settings />
-                </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="icon" variant="outline" className="bg-card">
+                    <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
 
-                {showGearMenu && (
-                  <div className="absolute right-0 mt-2 w-40 bg-card border border-border shadow-lg rounded-lg flex flex-col z-50">
-                    <button
-                      className="px-4 py-2 hover:bg-muted text-left"
-                      onClick={() => {
-                        setCollectionName(collection.name);
-                        setShowCollectionForm(true);
-                        setShowGearMenu(false);
-                      }}
-                    >
-                      Edit Collection
-                    </button>
-                    <button
-                      className="px-4 py-2 hover:bg-muted text-left text-destructive "
-                      onClick={handleDeleteCollection}
-                    >
-                      Delete Collection
-                    </button>
-                  </div>
-                )}
-              </div>
+                <DropdownMenuContent align="end" className="p-2">
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setCollectionName(collection.name);
+                      setShowCollectionForm(true);
+                      setShowGearMenu(false);
+                    }}
+                  >
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Edit Collection
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-red-600 focus:text-red-600 focus:bg-red-200 cursor-pointer"
+                    onClick={handleDeleteCollection}
+                  >
+                    <Trash className="mr-2 h-4 w-4 text-red-600" />
+                    Delete Collection
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           )}
 
@@ -277,7 +291,7 @@ const Collections = () => {
             <Card
               key={c._id}
               className={`p-5 rounded-xl shadow-md border border-border cursor-pointer hover:shadow-lg transition ${
-                viewMode === "list" ? "flex items-center" : ""
+                viewMode === "list" ? "flex items-left" : ""
               }`}
               onClick={() => navigate(`/collections/${c.name}`)}
             >
@@ -327,9 +341,7 @@ const Collections = () => {
                   <CardTitle>
                     <a
                       href={
-                        b.url.startsWith("http")
-                          ? b.url
-                          : `https://${b.url}`
+                        b.url.startsWith("http") ? b.url : `https://${b.url}`
                       }
                       target="_blank"
                       rel="noopener noreferrer"
@@ -355,9 +367,7 @@ const Collections = () => {
                   )}
 
                   {b.notes && (
-                    <p className="text-sm text-muted-foreground">
-                      {b.notes}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{b.notes}</p>
                   )}
 
                   <div className="flex justify-end gap-2 mt-2">
@@ -411,7 +421,7 @@ const Collections = () => {
                       Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({ name: collectionName }),
-                  }
+                  },
                 );
               } else {
                 await fetch("http://localhost:5000/api/collections", {
@@ -444,19 +454,17 @@ const Collections = () => {
             />
 
             <div className="flex justify-end gap-2">
-              <button
+              <Button
+                variant="outline"
                 type="button"
-                className="px-3 py-1 border rounded"
+                className="px-3 py-1 border"
                 onClick={() => setShowCollectionForm(false)}
               >
                 Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-3 py-1 bg-primary text-white rounded"
-              >
+              </Button>
+              <Button type="submit" className="px-3 py-1">
                 {collection ? "Update" : "Create"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>
@@ -466,4 +474,3 @@ const Collections = () => {
 };
 
 export default Collections;
-

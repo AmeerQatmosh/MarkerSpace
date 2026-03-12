@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import HeroSection from "../components/LandingPage/sections/HeroSection";
 import { useAuth } from "../context/AuthContext";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Bookmark, Star, Tag } from "lucide-react";
@@ -50,17 +49,6 @@ const Insights = () => {
 
   return (
     <div className="min-h-screen p-7 bg-background text-foreground">
-      <HeroSection
-        title="Insights"
-        subtitle="Understand how you use your bookmarks"
-        buttonText="View Collections"
-        buttonLink="/collections"
-        gradientFrom="from-yellow-900"
-        gradientTo="to-yellow-400"
-        textColor="text-white"
-        buttonBg="bg-white"
-        buttonTextColor="text-yellow-500"
-      />
 
       {loading ? (
         <div className="flex justify-center items-center mt-20">

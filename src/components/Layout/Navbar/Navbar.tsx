@@ -54,17 +54,13 @@ const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
     <header
       className={`
         top-0 z-50 w-full transition-all
-        ${
-          scrolled
-            ? "fixed bg-card/80 backdrop-blur-md border-b shadow-sm"
-            : "bg-card"
-        }
+        ${scrolled ? "fixed bg-card" : "bg-card"}
       `}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="PickCart" className="h-8 w-8" />
+          <img src={logo} alt="PickCart" className="h-9 w-9" />
         </Link>
 
         {/* Desktop Navigation */}

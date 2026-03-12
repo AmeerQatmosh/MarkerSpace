@@ -1,5 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
+import {
+  Grid,
+  List,
+  MoreVertical,
+  Pencil,
+  Trash,
+  CirclePlus,
+} from "lucide-react";
 interface ResourceCardProps {
   title: string
   href?: string

@@ -52,7 +52,7 @@ export default function ConceptSlider() {
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {slides.map((group, idx) => (
-          <div key={idx} className="w-full flex-shrink-0 px-6">
+          <div key={idx} className="w-full shrink-0 px-6">
             <div
               className="
                 grid gap-6

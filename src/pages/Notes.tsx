@@ -1,9 +1,17 @@
 import { useState, useEffect } from "react";
-import HeroSection from "@/components/LandingPage/sections/HeroSection";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import {
+  Grid,
+  List,
+  MoreVertical,
+  Pencil,
+  Trash,
+  CirclePlus,
+} from "lucide-react";
 
+import { usePersistentState } from "@/hooks/usePersistentState";
 interface Note {
   _id: string;
   title: string;
@@ -25,7 +33,8 @@ const Notes = () => {
   const [content, setContent] = useState("");
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [viewMode, setViewMode] = usePersistentState<ViewMode>("notes-viewMode", "grid");
+  
 
   // Fetch all notes
   const fetchNotes = async () => {
@@ -50,16 +59,23 @@ const Notes = () => {
 
   // Save or update a note
   const handleSaveNote = async () => {
-    if (!title.trim() || !content.trim()) return alert("Please fill in all fields");
+    if (!title.trim() || !content.trim())
+      return alert("Please fill in all fields");
     if (!token) return alert("You must be logged in");
 
     try {
       if (editingNote) {
-        const res = await fetch(`http://localhost:5000/api/notes/${editingNote._id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ title, content }),
-        });
+        const res = await fetch(
+          `http://localhost:5000/api/notes/${editingNote._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ title, content }),
+          },
+        );
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to update note");
 
@@ -67,7 +83,10 @@ const Notes = () => {
       } else {
         const res = await fetch("http://localhost:5000/api/notes", {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
           body: JSON.stringify({ title, content }),
         });
         const data = await res.json();
@@ -111,20 +130,9 @@ const Notes = () => {
     }
   };
 
+
   return (
     <div className="min-h-screen p-7">
-      <HeroSection
-        title="My Notes"
-        subtitle="Keep track of your notes for bookmarks"
-        buttonText="View Insights"
-        buttonLink="/insights"
-        gradientFrom="from-orange-900"
-        gradientTo="to-orange-400"
-        textColor="text-white"
-        buttonBg="bg-white"
-        buttonTextColor="text-orange-500"
-      />
-
       {/* Add/Edit & View Toggle Buttons */}
       <section className="text-center py-6 flex justify-center gap-4 flex-wrap">
         <Button
@@ -139,12 +147,26 @@ const Notes = () => {
           {editingNote ? "Edit Note" : "Add New Note"}
         </Button>
 
-        <Button variant={viewMode === "grid" ? "default" : "outline"} onClick={() => setViewMode("grid")}>
+        {/* <Button variant={viewMode === "grid" ? "default" : "outline"} onClick={() => setViewMode("grid")}>
           Grid
         </Button>
         <Button variant={viewMode === "list" ? "default" : "outline"} onClick={() => setViewMode("list")}>
           List
-        </Button>
+        </Button> */}
+        <div className="flex gap-2">
+          <Button
+            variant={viewMode === "grid" ? "default" : "outline"}
+            onClick={() => setViewMode("grid")}
+          >
+            <Grid className="w-5 h-5 mr-1" /> Grid
+          </Button>
+          <Button
+            variant={viewMode === "list" ? "default" : "outline"}
+            onClick={() => setViewMode("list")}
+          >
+            <List className="w-5 h-5 mr-1" /> List
+          </Button>
+        </div>
       </section>
 
       {/* Notes Form */}
@@ -157,7 +179,9 @@ const Notes = () => {
             }}
             className="bg-card p-6 rounded-xl shadow-lg w-full max-w-md space-y-4"
           >
-            <h3 className="text-xl font-semibold">{editingNote ? "Edit Note" : "Add Note"}</h3>
+            <h3 className="text-xl font-semibold">
+              {editingNote ? "Edit Note" : "Add Note"}
+            </h3>
 
             <input
               type="text"
@@ -201,17 +225,26 @@ const Notes = () => {
         ) : viewMode === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes.map((note) => (
-              <Card key={note._id} className="p-4 rounded-xl shadow-md border border-border">
+              <Card
+                key={note._id}
+                className="p-4 rounded-xl shadow-md border border-border"
+              >
                 <CardHeader>
                   <CardTitle>{note.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">{note.content}</p>
+                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                    {note.content}
+                  </p>
                   <div className="flex justify-end gap-2 mt-2">
                     <Button size="sm" onClick={() => handleEditNote(note)}>
                       Edit
                     </Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleDeleteNote(note._id)}>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDeleteNote(note._id)}
+                    >
                       Delete
                     </Button>
                   </div>
@@ -228,13 +261,19 @@ const Notes = () => {
               >
                 <div>
                   <h4 className="font-semibold">{note.title}</h4>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">{note.content}</p>
+                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                    {note.content}
+                  </p>
                 </div>
                 <div className="flex gap-2 mt-2">
                   <Button size="sm" onClick={() => handleEditNote(note)}>
                     Edit
                   </Button>
-                  <Button size="sm" variant="destructive" onClick={() => handleDeleteNote(note._id)}>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDeleteNote(note._id)}
+                  >
                     Delete
                   </Button>
                 </div>

@@ -20,13 +20,18 @@ type CommandLink = {
 const links: CommandLink[] = [
   { label: "Home", path: "/" },
   { label: "Collections", path: "/collections" },
-  { label: "Statistics", path: "/statistics" },
-  { label: "Features", path: "/features" },
-  { label: "Support", path: "/support" },
+  { label: "Insights", path: "/insights" },
+  { label: "Notes", path: "/notes" },
+  { label: "Focus", path: "/focus" },
+  { label: "Settings", path: "/settings" },
+  { label: "Profile", path: "/profile" },
+  { label: "Account", path: "/account" },
   { label: "About Us", path: "/about" },
   { label: "Contact Us", path: "/contact" },
-  { label: "Notes", path: "/notes" },
-  { label: "WatchList", path: "/watchlist" },
+  { label: "About Us", path: "/about" },
+  { label: "Contact Us", path: "/contact" },
+  { label: "Terms of Use", path: "/terms-of-use" },
+  { label: "Privacy Policy", path: "/privacy-policy" },
 ]
 
 export function CommandSearch() {

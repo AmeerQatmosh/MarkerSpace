@@ -134,6 +134,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import logo from "@/assets/markspace_logo.png";
 import { ModeToggle } from "@/components/mode-toggle";
+import { PasswordInput } from "@/components/PasswordInput";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -171,43 +172,6 @@ function SignUp() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground transition-colors duration-300 relative overflow-hidden">
-      {/* Left Panel / Hero / Info */}
-      <div
-        className="hidden md:flex flex-1 flex-col justify-center p-12 relative
-        bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900 dark:to-blue-900 transition-colors duration-500
-      "
-      >
-        {/* Blurred decorative shapes */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-green-300/30 dark:bg-green-800/20 filter blur-3xl"></div>
-        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-blue-300/30 dark:bg-blue-800/20 filter blur-3xl"></div>
-
-        {/* Logo + tagline */}
-        <div className="mb-8 flex items-center gap-2 z-10 relative">
-          <Link to="/" className="flex items-center gap-2">
-            <img
-              src={logo}
-              alt="MarkerSpace Logo"
-              className="h-10 w-10 object-contain"
-            />
-          </Link>
-          <span className="font-bold text-3xl text-foreground">MarkerSpace</span>
-        </div>
-
-        {/* Welcome message */}
-        <h1 className="text-4xl font-bold mb-4 z-10 relative">Join Us!</h1>
-        <p className="text-muted-foreground text-lg z-10 relative">
-          Create your account to start organizing your work, taking notes, and
-          staying productive.
-        </p>
-
-        {/* Optional extra info */}
-        <ul className="mt-6 space-y-2 text-sm text-muted-foreground z-10 relative">
-          <li>✅ Organize your work efficiently</li>
-          <li>✅ Collaborate with your team</li>
-          <li>✅ Stay focused and productive</li>
-        </ul>
-      </div>
-
       {/* Right Panel / Form */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative">
         {/* Logo + Theme Toggle */}
@@ -246,11 +210,11 @@ function SignUp() {
 
               {/* Username */}
               <div className="space-y-2">
-                <Label htmlFor="username">User Name</Label>
+                <Label htmlFor="username">Full Name</Label>
                 <Input
                   id="username"
                   type="text"
-                  placeholder="User Name"
+                  placeholder="Full Name"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
@@ -261,9 +225,8 @@ function SignUp() {
               {/* Password */}
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input
+                <PasswordInput
                   id="password"
-                  type="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -294,6 +257,45 @@ function SignUp() {
             </form>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Left Panel / Hero / Info */}
+      <div
+        className="hidden md:flex flex-1 flex-col justify-center p-12 relative
+        bg-linear-to-br from-green-100 to-blue-100 dark:from-green-900 dark:to-blue-900 transition-colors duration-500
+      "
+      >
+        {/* Blurred decorative shapes */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-green-300/30 dark:bg-green-800/20 filter blur-3xl"></div>
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-blue-300/30 dark:bg-blue-800/20 filter blur-3xl"></div>
+
+        {/* Logo + tagline */}
+        <div className="mb-8 flex items-center gap-2 z-10 relative">
+          <Link to="/" className="flex items-center gap-2">
+            <img
+              src={logo}
+              alt="MarkerSpace Logo"
+              className="h-10 w-10 object-contain"
+            />
+          </Link>
+          <span className="font-bold text-3xl text-foreground">
+            MarkerSpace
+          </span>
+        </div>
+
+        {/* Welcome message */}
+        <h1 className="text-4xl font-bold mb-4 z-10 relative">Join Us!</h1>
+        <p className="text-muted-foreground text-lg z-10 relative">
+          Create your account to start organizing your work, taking notes, and
+          staying productive.
+        </p>
+
+        {/* Optional extra info */}
+        <ul className="mt-6 space-y-2 text-sm text-muted-foreground z-10 relative">
+          <li>✅ Organize your work efficiently</li>
+          <li>✅ Collaborate with your team</li>
+          <li>✅ Stay focused and productive</li>
+        </ul>
       </div>
     </div>
   );
