@@ -75,9 +75,9 @@ export default function ConceptSlider() {
                   "
                 >
                   <div className="mb-4">{item.icon}</div>
-                  <h3 className="text-lg font-semibold text-foreground mb-1">
+                  <h2 className="text-lg font-semibold text-foreground mb-1">
                     {item.title}
-                  </h3>
+                  </h2>
                   <p className="text-sm text-muted-foreground">
                     {item.description}
                   </p>
@@ -92,9 +92,10 @@ export default function ConceptSlider() {
       <div className="flex justify-center mt-8 gap-2">
         {slides.map((_, idx) => (
           <button
+            aria-label="Slider button"
             key={idx}
             onClick={() => setCurrent(idx)}
-            className={`w-3 h-3 rounded-full transition ${
+            className={`w-3 h-3 rounded-full transition ml-2 ${
               current === idx
                 ? "bg-cyan-600 dark:bg-cyan-400"
                 : "bg-gray-300 dark:bg-gray-600"

@@ -4,12 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Grid,
-  List,
-  MoreVertical,
-  Pencil,
-  Trash,
-  CirclePlus,
+  List
 } from "lucide-react";
+import ResourceCard from "@/components/common/ResourceCard";
 
 import { usePersistentState } from "@/hooks/usePersistentState";
 interface Note {

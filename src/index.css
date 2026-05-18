@@ -194,4 +194,26 @@ button:focus-visible {
   button {
     cursor: pointer;
   }
+
+      /* Customized Nav Links */
+    .nav-link {
+        @apply relative transition-colors duration-200;
+      }
+    
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -23px; /* sits on navbar border */
+        width: 100%;
+        height: 2px;
+        background-color: var(--foreground); /* gray-900 */
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.25s ease;
+      }
+    
+      .nav-link.active::after {
+        transform: scaleX(1);
+      }
 }

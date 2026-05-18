@@ -1,14 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import HomePageSearchBar from "../components/Searchbar/homepageSearchBar";
 import AddBookmarkForm from "../components/Bookmarks/AddBookmarkForm";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
@@ -20,13 +13,9 @@ import {
 import {
   Grid,
   List,
-  MoreVertical,
-  Pencil,
-  Trash,
-  CirclePlus,
+  CirclePlus
 } from "lucide-react";
 import ResourceCard from "@/components/common/ResourceCard";
-import ResourceCardActions from "@/components/common/ResourceCardActions";
 import { usePersistentState } from "@/hooks/usePersistentState";
 interface Bookmark {
   _id: string;
@@ -159,19 +148,7 @@ const Home = () => {
   };
 
   return (
-    <div className="p-7 min-h-screen bg-background text-foreground transition-colors duration-300">
-      {/* Welcome */}
-      {profile && (
-        <div className="text-center text-xl mt-10 mb-6">
-          <h3>
-            Welcome{" "}
-            <strong className="text-primary font-bold text-2xl">
-              {profile.username || profile.email}
-            </strong>
-            , manage your bookmarks!
-          </h3>
-        </div>
-      )}
+    <main className="p-7 min-h-screen bg-background text-foreground transition-colors duration-300">
 
       {/* Search / Filter / View Toggle */}
       <div className="flex items-center justify-center mb-6 gap-4 flex-wrap">
@@ -188,12 +165,12 @@ const Home = () => {
               setFilterTag(value === "all" ? null : value)
             }
           >
-            <SelectTrigger className="w-45 bg-card">
+            <SelectTrigger id="tag-filter" className="w-45 bg-card" aria-label="Filter bookmarks by tag">
               <SelectValue placeholder="All tags" />
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value="all">All tags</SelectItem>
+              <SelectItem  value="all">All tags</SelectItem>
               {allTags.map((tag) => (
                 <SelectItem key={tag} value={tag}>
                   {tag}
@@ -207,12 +184,14 @@ const Home = () => {
           <Button
             variant={viewMode === "grid" ? "default" : "outline"}
             onClick={() => setViewMode("grid")}
+            aria-pressed={viewMode === "grid"}
           >
             <Grid className="w-5 h-5 mr-1" /> Grid
           </Button>
           <Button
             variant={viewMode === "list" ? "default" : "outline"}
             onClick={() => setViewMode("list")}
+            aria-pressed={viewMode === "list"}
           >
             <List className="w-5 h-5 mr-1" /> List
           </Button>
@@ -240,7 +219,7 @@ const Home = () => {
           }}
         >
           {" "}
-          <CirclePlus className="w-5 h-5 mr-1" />
+          <CirclePlus aria-hidden="true" className="w-5 h-5 mr-1" />
           {showForm ? "Close Form" : "Add New Bookmark"}
         </Button>
       </div>
@@ -259,134 +238,16 @@ const Home = () => {
           }
         >
           {filteredBookmarks.map((b) => (
-            <Card
-              key={b._id}
-              className={`p-4 rounded-xl shadow-none border border-border bg-card ${
-                b.isFocus ? "border-yellow-400" : ""
-              }`}
-            >
-              <CardHeader className="flex flex-row items-start justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={getFavicon(b.url)}
-                    alt="favicon"
-                    className="w-6 h-6"
-                  />
-                  <CardTitle className="text-lg font-semibold">
-                    <a
-                      href={
-                        b.url.startsWith("http") ? b.url : `https://${b.url}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline text-primary"
-                    >
-                      {b.title}
-                    </a>
-                  </CardTitle>
-                </div>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      className="cursor-pointer bg-card"
-                    >
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-
-                  <DropdownMenuContent align="end" className="p-2">
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      onClick={() => handleEditClick(b)}
-                    >
-                      <Pencil className="mr-2 h-4 w-4" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-red-600 focus:text-red-600 focus:bg-red-200 cursor-pointer"
-                      onClick={() => handleDeleteClick(b._id)}
-                    >
-                      <Trash className="mr-2 h-4 w-4 text-red-600" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </CardHeader>
-
-              <CardContent className="space-y-2">
-                {b.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {b.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-xs"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {b.notes && (
-                  <p className="text-sm text-muted-foreground">{b.notes}</p>
-                )}
-              </CardContent>
-            </Card>
+            <ResourceCard
+                key={b._id}
+                bookmark={b}
+                getFavicon={getFavicon}
+                onEdit={handleEditClick}
+                onDelete={handleDeleteClick} />
           ))}
         </div>
-
-        //         <div
-        //   className={
-        //     viewMode === "grid"
-        //       ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        //       : "flex flex-col gap-4"
-        //   }
-        // >
-        //   {filteredBookmarks.map((b) => (
-        //     <ResourceCard
-        //       key={b._id}
-        //       title={b.title}
-        //       href={b.url.startsWith("http") ? b.url : `https://${b.url}`}
-        //       icon={<img src={getFavicon(b.url)} alt="favicon" className="w-5 h-5" />}
-        //       highlighted={b.isFocus}
-        //       actions={
-        //         <DropdownMenu>
-        //           <DropdownMenuTrigger asChild>
-        //             <Button size="icon" variant="outline">
-        //               <MoreVertical className="w-4 h-4" />
-        //             </Button>
-        //           </DropdownMenuTrigger>
-        //           <DropdownMenuContent align="end">
-        //             <DropdownMenuItem onClick={() => handleEditClick(b)}>
-        //               <Pencil className="mr-2 h-4 w-4" /> Edit
-        //             </DropdownMenuItem>
-        //             <DropdownMenuItem
-        //               className="text-red-600 focus:text-red-600 focus:bg-red-200"
-        //               onClick={() => handleDeleteClick(b._id)}
-        //             >
-        //               <Trash className="mr-2 h-4 w-4 text-red-600" /> Delete
-        //             </DropdownMenuItem>
-        //           </DropdownMenuContent>
-        //         </DropdownMenu>
-        //       }
-        //     >
-        //       {b.tags.length > 0 && (
-        //         <div className="flex flex-wrap gap-2">
-        //           {b.tags.map((tag) => (
-        //             <span key={tag} className="bg-muted px-2 py-1 rounded text-xs">
-        //               {tag}
-        //             </span>
-        //           ))}
-        //         </div>
-        //       )}
-        //       {b.notes && <p className="text-sm text-muted-foreground">{b.notes}</p>}
-        //     </ResourceCard>
-        //   ))}
-        // </div>
       )}
-    </div>
+    </main>
   );
 };
 

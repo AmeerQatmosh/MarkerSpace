@@ -34,7 +34,7 @@ const PricingSection: React.FC = () => {
   ];
 
   return (
-    <section id="pricing" className="py-24 bg-muted/20">
+    <section id="pricing" className="py-24">
       <div className="max-w-7xl mx-auto px-6 text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Simple, transparent pricing
@@ -48,7 +48,7 @@ const PricingSection: React.FC = () => {
         {plans.map((plan) => (
           <div
             key={plan.name}
-            className="rounded-2xl border bg-background p-8 shadow-sm hover:shadow-md transition"
+            className="rounded-2xl border bg-card p-8 shadow-sm hover:shadow-md transition"
           >
             <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
             <p className="text-muted-foreground mb-4">{plan.desc}</p>

@@ -58,20 +58,20 @@ const ProfileMenu = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="p-2">
-        <Link to="/profile">
+        <Link to="/settings/profile">
           <DropdownMenuItem className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" /> Profile
+            <User className="mr-2 h-4 w-4 text-foreground" /> Profile
           </DropdownMenuItem>
         </Link>
 
-        <Link to="/settings">
+        <Link to="/settings/general">
           <DropdownMenuItem className="cursor-pointer">
-            <Settings className="mr-2 h-4 w-4" /> Settings
+            <Settings className="mr-2 h-4 w-4 text-foreground" /> Settings
           </DropdownMenuItem>
         </Link>
 
-        <DropdownMenuItem className="cursor-pointer text-amber-500 focus:text-amber-500 focus:bg-amber-200" onClick={handleLogout}>
-          <LogOut className="mr-2 h-4 w-4 text-amber-500 " /> Logout
+        <DropdownMenuItem className="cursor-pointer text-amber-500 focus:text-amber-500 focus:bg-amber-100" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4 text-amber-500" /> Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

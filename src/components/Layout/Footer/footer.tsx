@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "@/assets/markspace_logo.png";
+import logo from "@/assets/markerspace_logo.svg";
 
 const Footer: React.FC = () => {
   return (

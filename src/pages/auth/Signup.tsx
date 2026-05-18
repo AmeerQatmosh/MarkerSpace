@@ -132,7 +132,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import logo from "@/assets/markspace_logo.png";
+import logo from "@/assets/markerspace_logo.svg";
 import { ModeToggle } from "@/components/mode-toggle";
 import { PasswordInput } from "@/components/PasswordInput";
 
@@ -171,7 +171,7 @@ function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground transition-colors duration-300 relative overflow-hidden">
+    <main className="min-h-screen flex flex-col md:flex-row bg-background text-foreground transition-colors duration-300 relative overflow-hidden">
       {/* Right Panel / Form */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative">
         {/* Logo + Theme Toggle */}
@@ -249,7 +249,7 @@ function SignUp() {
                 Already have an account?{" "}
                 <Link
                   to="/signin"
-                  className="text-primary hover:underline transition-colors duration-300"
+                  className="text-foreground hover:underline transition-colors duration-300"
                 >
                   Sign In
                 </Link>
@@ -297,7 +297,7 @@ function SignUp() {
           <li>✅ Stay focused and productive</li>
         </ul>
       </div>
-    </div>
+    </main>
   );
 }
 

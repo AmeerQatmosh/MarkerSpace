@@ -84,7 +84,7 @@ const faqs = [
 
 const FAQSection: React.FC = () => {
   return (
-    <section id="faq" className="py-24 bg-muted/40">
+    <section id="faq" className="py-24">
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
           Frequently asked questions
@@ -95,7 +95,7 @@ const FAQSection: React.FC = () => {
             <AccordionItem
               key={faq.q}
               value={`item-${index}`}
-              className="rounded-xl border bg-background hover:bg-secondary px-6"
+              className="rounded-xl border bg-card hover:bg-secondary px-6"
             >
               <AccordionTrigger className="group flex items-center justify-between py-6 text-left font-semibold">
                 <span>{faq.q}</span>

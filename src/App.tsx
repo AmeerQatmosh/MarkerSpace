@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 /* =======================
    Pages
@@ -14,11 +19,12 @@ import Focus from "./pages/Focus";
 import Dashboard from "./pages/Dashboard";
 import UserProfile from "./pages/userProfile";
 
+import SettingsLayout from "./pages/User/SettingsLayout";
 import Account from "./pages/User/Account";
 import Profile from "./pages/User/Profile";
 import Settings from "./pages/User/Settings";
 
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 
 /* =======================
    Auth Pages
@@ -166,7 +172,6 @@ function AppRoutes() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-use" element={<TermsOfUse />} />
 
-
         {/* Home */}
         <Route
           path="/home"
@@ -194,24 +199,75 @@ function AppRoutes() {
         />
 
         {/* Protected */}
-        <Route path="/collections" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
-        <Route path="/collections/:collectionName" element={<ProtectedRoute><Collections /></ProtectedRoute>} />
-        <Route path="/insights" element={<ProtectedRoute><Insights /></ProtectedRoute>} />
-        <Route path="/notes" element={<ProtectedRoute><Notes /></ProtectedRoute>} />
-        <Route path="/focus" element={<ProtectedRoute><Focus/></ProtectedRoute>} />
+        <Route
+          path="/collections"
+          element={
+            <ProtectedRoute>
+              <Collections />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/collections/:collectionName"
+          element={
+            <ProtectedRoute>
+              <Collections />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/insights"
+          element={
+            <ProtectedRoute>
+              <Insights />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notes"
+          element={
+            <ProtectedRoute>
+              <Notes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/focus"
+          element={
+            <ProtectedRoute>
+              <Focus />
+            </ProtectedRoute>
+          }
+        />
 
         {/* User */}
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/userprofile" element={<ProtectedRoute><UserProfile profile={profile} /></ProtectedRoute>} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/userprofile"
+          element={
+            <ProtectedRoute>
+              <UserProfile profile={profile} />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/settings" element={<SettingsLayout />}>
+          <Route index element={<Navigate to="profile" />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="account" element={<Account />} />
+          <Route path="general" element={<Settings />} />
+        </Route>
 
         {/* Errors */}
         <Route path="/no-results-found" element={<NoResultsFound />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-
       {!authPages.includes(location.pathname) && <Footer />}
     </>
   );
@@ -223,13 +279,13 @@ function AppRoutes() {
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-    <div className="min-h-screen transition-colors duration-300">
-      <AuthProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </AuthProvider>
-    </div>
+      <div className="min-h-screen transition-colors duration-300">
+        <AuthProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </AuthProvider>
+      </div>
     </ThemeProvider>
   );
 }

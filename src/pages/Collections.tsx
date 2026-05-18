@@ -19,8 +19,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-// import ResourceCard from "@/components/common/ResourceCard";
-// import ResourceCardActions from "@/components/common/ResourceCardActions";
+import ResourceCard from "@/components/common/ResourceCard";
 interface Bookmark {
   _id: string;
   title: string;
@@ -230,6 +229,20 @@ const Collections = () => {
                 <CirclePlus className="w-5 h-5 mr-1" /> Add Bookmard
               </Button>
 
+              <div className="flex gap-2">
+                <Button
+                  variant={viewMode === "grid" ? "default" : "outline"}
+                  onClick={() => setViewMode("grid")}
+                >
+                  <Grid className="w-5 h-5 mr-1" /> Grid
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "default" : "outline"}
+                  onClick={() => setViewMode("list")}
+                >
+                  <List className="w-5 h-5 mr-1" /> List
+                </Button>
+              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button size="icon" variant="outline" className="bg-card">
@@ -260,21 +273,6 @@ const Collections = () => {
               </DropdownMenu>
             </>
           )}
-
-          <div className="flex gap-2">
-            <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
-              onClick={() => setViewMode("grid")}
-            >
-              <Grid className="w-5 h-5 mr-1" /> Grid
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"}
-              onClick={() => setViewMode("list")}
-            >
-              <List className="w-5 h-5 mr-1" /> List
-            </Button>
-          </div>
         </div>
       </div>
 
@@ -328,62 +326,13 @@ const Collections = () => {
             }
           >
             {filteredBookmarks.map((b) => (
-              <Card
+              <ResourceCard
                 key={b._id}
-                className="p-4 rounded-xl shadow-md border border-border"
-              >
-                <CardHeader className="flex items-center gap-2">
-                  <img
-                    src={getFavicon(b.url)}
-                    alt="favicon"
-                    className="w-6 h-6"
-                  />
-                  <CardTitle>
-                    <a
-                      href={
-                        b.url.startsWith("http") ? b.url : `https://${b.url}`
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline text-primary"
-                    >
-                      {b.title}
-                    </a>
-                  </CardTitle>
-                </CardHeader>
-
-                <CardContent>
-                  {b.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {b.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="bg-muted px-2 py-1 rounded text-xs"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {b.notes && (
-                    <p className="text-sm text-muted-foreground">{b.notes}</p>
-                  )}
-
-                  <div className="flex justify-end gap-2 mt-2">
-                    <Button size="sm" onClick={() => handleEditClick(b)}>
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDeleteBookmark(b._id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                bookmark={b}
+                getFavicon={getFavicon}
+                onEdit={handleEditClick}
+                onDelete={handleDeleteBookmark}
+              />
             ))}
           </div>
         </div>

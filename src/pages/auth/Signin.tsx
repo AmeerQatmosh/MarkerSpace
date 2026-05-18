@@ -132,7 +132,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import logo from "@/assets/markspace_logo.png";
+import logo from "@/assets/markerspace_logo.svg";
 import { ModeToggle } from "@/components/mode-toggle";
 import { PasswordInput } from "@/components/PasswordInput";
 
@@ -157,7 +157,7 @@ function SignIn() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-background text-foreground transition-colors duration-300 relative overflow-hidden">
+    <main className="min-h-screen flex flex-col md:flex-row bg-background text-foreground transition-colors duration-300 relative overflow-hidden">
       {/* Left Panel / Form */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 relative">
         {/* Logo + Theme Toggle always visible */}
@@ -230,6 +230,7 @@ function SignIn() {
 
               {/* Sign In Button */}
               <Button
+                aria-label="Sign in"
                 type="submit"
                 className="w-full border border-border bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-300"
               >
@@ -246,7 +247,7 @@ function SignIn() {
                 Don't have an account?{" "}
                 <Link
                   to="/signup"
-                  className="text-primary hover:underline transition-colors duration-300"
+                  className="text-foreground hover:underline transition-colors duration-300"
                 >
                   Sign Up
                 </Link>
@@ -294,7 +295,7 @@ function SignIn() {
           <li>✅ Stay focused and productive</li>
         </ul>
       </div>
-    </div>
+    </main>
   );
 }
 

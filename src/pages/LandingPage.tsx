@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+ 
 
 import HeroSection from "@/components/LandingPage/sections/HeroSection";
 import ConceptSlider from "@/components/LandingPage/ConceptSlider";
@@ -26,7 +27,7 @@ const sectionMotion = {
 
 function LandingPage() {
   return (
-    <div className="flex flex-col">
+    <main className="flex flex-col">
       {/* ---------------------------------- */}
       {/* TOP HERO */}
       {/* ---------------------------------- */}
@@ -138,7 +139,7 @@ function LandingPage() {
           gradientFrom="from-red-700"
           gradientTo="to-red-900"
           textColor="text-white"
-          buttonText="Learn More"
+          buttonText="Learn More About Us"
           buttonLink="/about"
           className="py-24 relative overflow-hidden"
         >
@@ -231,7 +232,7 @@ function LandingPage() {
       <motion.div {...sectionMotion}>
         <CTASection />
       </motion.div>
-    </div>
+    </main>
   );
 }
 

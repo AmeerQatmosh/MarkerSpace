@@ -13,7 +13,7 @@ import {
 
 function Contact() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <main className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Company Contact Info */}
         <Card className="shadow-lg">
@@ -83,7 +83,7 @@ function Contact() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </main>
   );
 }
 

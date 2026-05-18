@@ -19,7 +19,7 @@ const AboutSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="rounded-2xl bg-muted/40 h-64 flex items-center justify-center text-muted-foreground">
+        <div className="rounded-2xl bg-card h-64 flex items-center justify-center text-muted-foreground">
           Placeholder image / illustration
         </div>
       </div>

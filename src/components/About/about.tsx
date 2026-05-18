@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const About: React.FC = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-background text-foreground transition-colors duration-300">
+    <main className="min-h-screen flex items-center justify-center px-4 py-10 bg-background text-foreground transition-colors duration-300">
       <Card className="w-full max-w-4xl p-8 md:p-12 rounded-2xl shadow-lg border border-border">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center mb-6">About Us</CardTitle>
@@ -47,7 +47,7 @@ const About: React.FC = () => {
           </section>
         </CardContent>
       </Card>
-    </div>
+    </main>
   );
 };
 

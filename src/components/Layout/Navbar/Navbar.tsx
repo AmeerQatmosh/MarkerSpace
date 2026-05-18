@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import logo from "@/assets/markspace_logo.png";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import logo from "@/assets/markerspace_logo.svg";
 import { Folder, ChartNetwork, Notebook, Focus, Menu } from "lucide-react";
 
 import Notification from "@/components/Notifications/Notification";
@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
     <header
       className={`
         top-0 z-50 w-full transition-all
-        ${scrolled ? "fixed bg-card" : "bg-card"}
+        ${scrolled ? "fixed bg-card border border-border" : "bg-card border border-border"}
       `}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -68,21 +68,21 @@ const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
           {(user ? userLinks : guestLinks).map((link) => {
             const Icon = "icon" in link ? link.icon : null;
             return (
-              <Link
+              <NavLink
                 key={link.name}
                 to={link.path}
                 className={`
                   flex items-center gap-1 text-sm font-medium transition-colors
                   ${
                     isActive(link.path)
-                      ? "text-foreground"
+                      ? "text-foreground nav-link"
                       : "text-muted-foreground hover:text-foreground"
                   }
                 `}
               >
                 {Icon && <Icon className="h-4 w-4" />}
                 {link.name}
-              </Link>
+              </NavLink>
             );
           })}
         </nav>
@@ -121,23 +121,24 @@ const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
 
         {/* Mobile Menu */}
         <div className="md:hidden">
+          <CommandSearch />
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-9 w-9">
+              <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="navbar burger menu">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-72 pt-10">
-              <div className="mt-6 flex flex-col gap-4">
+            <SheetContent side="right" className="w-72 pt-10 bg-card">
+              <div className="mt-6 flex flex-col gap-2">
                 {(user ? userLinks : guestLinks).map((link) => {
                   const Icon = "icon" in link ? link.icon : null;
                   return (
-                    <Link
+                    <NavLink
                       key={link.name}
                       to={link.path}
                       className={`
-                        flex items-center gap-2 rounded-md px-3 py-2 text-sm
+                        flex items-center gap-2 rounded-none px-3 py-2 text-sm
                         ${
                           isActive(link.path)
                             ? "bg-muted text-foreground"
@@ -147,7 +148,7 @@ const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
                     >
                       {Icon && <Icon className="h-4 w-4" />}
                       {link.name}
-                    </Link>
+                    </NavLink>
                   );
                 })}
 
@@ -155,21 +156,21 @@ const Navbar: React.FC<NavbarProps> = ({ user, setUser }) => {
                   <>
                     <Link
                       to="/signin"
-                      className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted"
+                      className="px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                     >
                       Sign In
                     </Link>
                     <Link
                       to="/signup"
-                      className="rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground"
+                      className="px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                     >
                       Sign Up
                     </Link>
                   </>
                 )}
 
-                <div className="pt-4 border-t">
-                  <ModeToggle />
+                <div className="pt-4 border-t m-2">
+                  <ModeToggle showLabel />
                 </div>
               </div>
             </SheetContent>

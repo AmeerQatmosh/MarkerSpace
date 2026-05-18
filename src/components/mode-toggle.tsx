@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Sun, Moon, Monitor } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,37 +9,60 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useTheme } from "@/components/theme-provider"
 
-export function ModeToggle() {
+type Theme = "light" | "dark" | "system"
+
+type ModeToggleProps = {
+  showLabel?: boolean
+}
+
+export function ModeToggle({ showLabel = false }: ModeToggleProps) {
   const { theme, setTheme } = useTheme()
 
+  const currentTheme = (theme as Theme) || "system"
+
   const Icon =
-    theme === "light"
+    currentTheme === "light"
       ? Sun
-      : theme === "dark"
+      : currentTheme === "dark"
       ? Moon
-      : Monitor // system
+      : Monitor
+
+  const label =
+    currentTheme === "light"
+      ? "Light"
+      : currentTheme === "dark"
+      ? "Dark"
+      : "System"
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="cursor-pointer bg-card">
-          <Icon className="h-[1.2rem] w-[1.2rem]" />
+        <Button
+          type="button"
+          variant="outline"
+          size={showLabel ? "default" : "icon"}
+          className="flex items-center gap-2 bg-card"
+        >
+          <Icon className="h-4 w-4" />
+
+          {showLabel && <span className="text-sm">{label}</span>}
+
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="p-2">
-        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => setTheme("light")}>
           <Sun className="mr-2 h-4 w-4" />
           Light
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
           <Moon className="mr-2 h-4 w-4" />
           Dark
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
           <Monitor className="mr-2 h-4 w-4" />
           System
         </DropdownMenuItem>
@@ -46,3 +70,5 @@ export function ModeToggle() {
     </DropdownMenu>
   )
 }
+
+
