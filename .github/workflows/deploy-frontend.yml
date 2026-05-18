@@ -32,13 +32,13 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json  # adjust path
 
-      # - name: Install dependencies
-      #   working-directory: ./frontend  # adjust to your frontend folder
-      #   run: npm ci
+      - name: Install dependencies
+        working-directory: ./frontend  # adjust to your frontend folder
+        run: npm ci
 
-      # - name: Build
-      #   working-directory: ./frontend  # adjust to your frontend folder
-      #   run: npm run build
+      - name: Build
+        working-directory: ./frontend  # adjust to your frontend folder
+        run: npm run build
         env:
           # Add any frontend-only env vars here (no backend secrets!)
           VITE_API_URL: ${{ vars.VITE_API_URL }}
