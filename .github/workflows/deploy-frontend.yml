@@ -33,11 +33,11 @@ jobs:
           cache-dependency-path: package-lock.json  # adjust path
 
       - name: Install dependencies
-        working-directory: ./frontend  # adjust to your frontend folder
+        working-directory: ./  # adjust to your frontend folder
         run: npm ci
 
       - name: Build
-        working-directory: ./frontend  # adjust to your frontend folder
+        working-directory: ./  # adjust to your frontend folder
         run: npm run build
         env:
           # Add any frontend-only env vars here (no backend secrets!)
