@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
- 
 
 import HeroSection from "@/components/LandingPage/sections/HeroSection";
 import ConceptSlider from "@/components/LandingPage/ConceptSlider";
@@ -37,7 +36,7 @@ function LandingPage() {
       >
         <div className="absolute inset-0 bg-cyan-950 z-0" />
         <motion.div
-          className="relative z-20 px-6 max-w-3xl m-10"
+          className="relative z-20 px-6 max-w-3xl m-10 ml-50"
           variants={fadeUp}
         >
           <motion.h1
