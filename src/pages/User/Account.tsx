@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -85,12 +86,12 @@ const Account: React.FC = () => {
           </CardHeader>
 
           <CardContent className="flex flex-col gap-2">
-            <a href="/profile" className="text-primary hover:underline">
+            <Link to="/settings/profile" className="text-primary hover:underline">
               Go to Profile Settings
-            </a>
-            <a href="/settings" className="text-primary hover:underline">
+            </Link>
+            <Link to="/settings/general" className="text-primary hover:underline">
               Go to General Settings
-            </a>
+            </Link>
           </CardContent>
         </Card>
 

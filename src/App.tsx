@@ -276,12 +276,14 @@ function AppRoutes() {
 /* =======================
    App Root
 ======================= */
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, "")
+
 function App() {
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <div className="min-h-screen transition-colors duration-300">
         <AuthProvider>
-          <Router>
+          <Router basename={routerBasename}>
             <AppRoutes />
           </Router>
         </AuthProvider>

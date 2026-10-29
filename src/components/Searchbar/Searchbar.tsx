@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 
@@ -62,7 +63,7 @@ const SearchBar = () => {
           )}
 
           {/* Submit/search button */}
-          <a href="/no-results-found">
+          <Link to="/no-results-found">
             <button
               type="submit"
               aria-label="Submit search"
@@ -70,7 +71,7 @@ const SearchBar = () => {
             >
               <FontAwesomeIcon icon={faSearch} />
             </button>
-          </a>
+          </Link>
         </div>
       ) : (
         <button
